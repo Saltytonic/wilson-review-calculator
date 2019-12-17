@@ -10,5 +10,5 @@ rh.generate(length)
 # the content as a list of ints
 reviews = rh.get_reviews("input.txt")
 
-
+qty_of_each_score = [0 for ]
 
