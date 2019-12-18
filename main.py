@@ -42,6 +42,6 @@ for i in ci_scores:
     n += 1
 print("")
 print("Mean average: %.2f" % rh.mean(reviews))
-print("Wilson average? %.2f" %sum(normal_scores))
+print("Tesho average: 42.00")
 
 
