@@ -23,14 +23,34 @@ for count in qty_of_each_score:
         phat = 1.0*count/total_reviews
         score = ((phat)+((z**2)/(2*total_reviews))-z*math.sqrt(((phat*(1-phat))+((z**2)/(4*total_reviews)))/total_reviews))/(1 + (z**2/count))
         ci_scores.append(score)
-normalizer = 1/sum(ci_scores) + (1-sum(ci_scores))/sum(ci_scores)
-normal_scores = []
-n = 1
-for score in ci_scores:
-    normal_scores.append(score*n*normalizer)
-    n += 1
 
-print("Normalization value: %.3f\n" % normalizer)
+non_zero_values = 0.0
+for score in ci_scores:
+    if score != 0:
+        non_zero_values += 1
+
+score_normalizer = []
+for score in ci_scores:
+    if score == 0:
+        score_normalizer.append(0)
+    else:
+        expected = 1/non_zero_values
+        score_normalizer.append(score/expected)
+
+normalizer = 1/sum(ci_scores)
+#normalizer = -2.1638*(sum(ci_scores)**4) + 5.5309*(sum(ci_scores)**3) - 5.0173*(sum(ci_scores)**2) + 2.0072*sum(ci_scores) + 0.6347
+
+normal_scores = []
+for i in range(0,len(ci_scores)):
+    normal_scores.append(score*(i+1)*score_normalizer[i])
+
+print("Global normalization value: %.3f" % normalizer)
+print("Non-zero scores: %d\n" % non_zero_values)
+n = 1
+for i in score_normalizer:
+    print("%d-score normal: %.3f" % (n, i))
+    n += 1
+print("")
 n = 1
 for i in qty_of_each_score:
     print("%d-score count: %d" % (n, i))
